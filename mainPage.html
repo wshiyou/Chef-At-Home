@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef at Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- main header of our website -->
+    <div class="bar">
+      <div class="title">
+        <div class="logo">🍳</div>
+        <span>Chef at Home</span>
+    </div>
+      <div class="grow"></div>
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        <input id="q" placeholder="search" />
+      </div>
+      <button class="btn warn" id="importBtn">Import</button>
+      <button class="btn" id="exportBtn">Export</button>
+      <button class="btn primary" id="addBtn">Add new recipe</button>
+    </div>
+
+    <!-- Filter -->
+    <h3>Filter</h3>
+    <div>
+        <label for="sort">Rank</label>
+        <select id="sort">
+        <option value="new">Newest</option>
+        <option value="time">Time</option>
+        <option value="fav">Favorites first</option>
+        </select>
+    </div>
+    <div>
+        <label>Popular tags</label>
+        <div id="tagCloud" class="chips"></div>
+    </div>
+    <div>
+        <label>Show favorites only</label>
+        <input type="checkbox" id="favOnly" />
+    </div>
+    <script src="mainPage.js"></script>
+</body>
+</html>
