@@ -1,0 +1,53 @@
+body{
+    padding: 0;
+    margin: 0;
+    background-image: url(https://static.independent.co.uk/s3fs-public/thumbnails/image/2020/04/02/13/istock-1155240408.jpg);
+    /* backdrop-filter: blur(); */
+    background-size: cover;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: inherit;
+  filter: contrast(0.6) brightness(0.6);
+  z-index: -1;
+}
+
+
+.title{
+    /* font-family:Brush Script MT; */
+    font-family: Copperplate, Papyrus, fantasy;
+    font-size: 5rem;
+    font-weight: bold;
+    color:white;
+    text-align: center;
+
+}
+
+.search{
+    text-align: center;
+    align-items: center;
+}
+
+.search input {
+  width: 350px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+.searchBtn{
+    background-color:lightblue;
+    width: 100px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.searchBtn:hover{
+    background-color:rgb(73, 108, 119);
+}
