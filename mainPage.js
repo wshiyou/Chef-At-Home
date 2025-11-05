@@ -26,9 +26,34 @@ const db = getFirestore(app);
 // ===========================
 async function getRecipes() {
   const querySnapshot = await getDocs(collection(db, "recipes"));
+ async function getRecipes() {
+  const querySnapshot = await getDocs(collection(db, "recipes"));
+
+  // 找到页面上的“Recent Upload”部分（或任意 grid）
+  const grid = document.getElementById("recent-grid");
+  if (!grid) return;
+
+  grid.innerHTML = ""; // 清空旧内容
+
   querySnapshot.forEach((doc) => {
-    console.log(doc.id, " => ", doc.data());
+    const recipe = doc.data();
+
+    // 创建一个卡片元素
+    const card = document.createElement("div");
+    card.className = "recipe-card";
+    card.innerHTML = `
+      <img src="${recipe.imageURL || "https://via.placeholder.com/150"}"
+           alt="${recipe.name}"
+           style="width:200px;height:150px;border-radius:8px;object-fit:cover;">
+      <h3>${recipe.name}</h3>
+      <p>⏱ ${recipe.time || "?"} mins</p>
+      <p>❤️ ${recipe.favorites || 0}</p>
+    `;
+
+    grid.appendChild(card); // 添加到页面
   });
+}
+
 }
 
 // ===========================
