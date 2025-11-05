@@ -18,37 +18,62 @@
         </div>
       </div>
     </div>
-    <button class="btn warn" id="importBtn">Import</button>
-    <button class="btn" id="exportBtn">Export</button>
-    <button class="btn primary" id="addBtn">Add new recipe</button>
-    </div>
-      
-    <!-- <div class="search">
-      <input id="searchBar" placeholder="Browse by the name of dish/ingredients/kitchenware">
-      <button class="searchBtn">search</button>
-    </div>
-    <button class="btn warn" id="importBtn">Import</button>
-    <button class="btn" id="exportBtn">Export</button>
-    <button class="btn primary" id="addBtn">Add new recipe</button> -->
 
-    <!-- Filter -->
-    <h3>Filter</h3>
-    <div>
-        <label for="sort">Rank</label>
-        <select id="sort">
-        <option value="new">Newest</option>
-        <option value="time">Time</option>
-        <option value="fav">Favorites first</option>
-        
-    </div>
-    <div>
-        <label>Popular tags</label>
-        <div id="tagCloud" class="chips"></div>
-    </div>
-    <div>
-        <label>Show favorites only</label>
-        <input type="checkbox" id="favOnly" />
-    </div>
+    <nav class="mainNav">
+      <a href="#recommended">Recommended</a>
+      <a href="#recent">Recent Upload</a>
+      <a href="#most-liked">Most Liked</a>
+    </nav>
+
+    <div class="filters">
+        <div class="filter-group">
+          <label for="filter-ingredient">Ingredients</label>
+          <select id="filter-ingredient">
+            <option value="">All ingredients</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filter-kitchenware">Kitchenware</label>
+          <select id="filter-kitchenware">
+            <option value="">All kitchenware</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filter-region">Region</label>
+          <select id="filter-region">
+            <option value="">All regions</option>
+          </select>
+        </div>
+      </div>
+      
+    <section class="recipes-wrapper">
+      <!-- Recommended -->
+      <section id="recommended" class="recipes-section">
+        <div class="section-header">
+          <h2>Recommended</h2>
+        </div>
+        <div id="recommended-grid" class="recipes-grid"></div>
+      </section>
+
+      <!-- Recent Upload -->
+      <section id="recent" class="recipes-section">
+        <div class="section-header">
+          <h2>Recent Upload</h2>
+        </div>
+        <div id="recent-grid" class="recipes-grid"></div>
+      </section>
+
+      <!-- Most Liked -->
+      <section id="most-liked" class="recipes-section">
+        <div class="section-header">
+          <h2>Most Liked</h2>
+        </div>
+        <div id="liked-grid" class="recipes-grid"></div>
+      </section>
+    </section>
+
     <script src="mainPage.js"></script>
 </body>
 </html>

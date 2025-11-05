@@ -51,3 +51,27 @@ body::before {
 .searchBtn:hover{
     background-color:rgb(73, 108, 119);
 }
+
+.mainNav{
+    display: flex;
+    font-size: 2.5rem;
+    gap: 5rem;
+}
+
+.filters {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.filter-group {
+    font-size: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.filter-ingredient{
+}
