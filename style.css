@@ -9,43 +9,49 @@ body{
 }
 
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: inherit;
-  filter: contrast(0.6) brightness(0.6);
-  z-index: -1;
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: inherit;
+    filter: contrast(0.6) brightness(0.6);
+    z-index: -1;
 }
 
 
-.title{
-    /* font-family:Brush Script MT; */
-    font-family: Copperplate, Papyrus, fantasy;
+.title {
+    font-family: 'Papyrus', fantasy;
     font-size: 5rem;
     font-weight: bold;
-    color:white;
-    text-align: center;
-
-}
-
-.search{
-    text-align: center;
+    color: white;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+}   
+
 .search input {
-  width: 350px;
-  padding: 10px 15px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
+    width: 350px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    text-align: center;
 }
 
-.searchBtn{
-    background-color:lightblue;
+.searchBtn {
+    background-color: lightblue;
     width: 100px;
     padding: 10px 15px;
     border-radius: 20px;
     border: 1px solid #ccc;
+    font-weight: bold;
+
 }
 
 .searchBtn:hover{
@@ -73,5 +79,130 @@ body::before {
     align-items: flex-start;
 }
 
-.filter-ingredient{
+.filters {
+    background-color: rgba(240, 248, 255, 0.85); /* 淡浅蓝底色 */
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    margin: 2rem auto;
+    width: fit-content;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(6px);
+}
+
+/* 每个小分类块 */
+.filter-group {
+    background-color: rgba(255, 255, 255, 0.8); /* 白色半透明背景 */
+    border-radius: 15px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-group:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.filter-group label {
+    color: #333;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.filter-group select {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 0.4rem 0.8rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-group select:hover {
+    border-color: #f97316;
+    box-shadow: 0 0 6px rgba(249, 115, 22, 0.5);
+}
+
+.section-header h2 {
+    color: #222;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+#recommended {
+    background-color: rgba(255, 204, 128, 0.85);
+    padding: 2rem;
+    border-radius: 20px;
+    margin: 2rem;
+}
+
+#recent {
+    background-color: rgba(173, 216, 230, 0.85); 
+    padding: 2rem;
+    border-radius: 20px;
+    margin: 2rem;
+}
+
+#most-liked {
+    background-color: rgba(255, 182, 193, 0.85);
+    padding: 2rem;
+    border-radius: 20px;
+    margin: 2rem;
+}
+
+.bar {
+    position: relative;
+    width: 100%;
+    height: 250px; /* 可根据需要调整高度 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* 水平居中 */
+    justify-content: center;  /* 垂直居中 */
+    text-align: center;
+}
+
+/* 右上角按钮容器 */
+.top-buttons {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    display: flex;
+    gap: 1rem;
+}
+
+/* 通用按钮样式 */
+.top-buttons button {
+    font-size: 1.2rem;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+/* Add Recipe 按钮 */
+.addRecipeBtn {
+    background-color: #f97316; /* 橙色 */
+    color: white;
+    box-shadow: 0 4px 10px rgba(249, 115, 22, 0.5);
+}
+
+.addRecipeBtn:hover {
+    background-color: #fb923c;
+    transform: translateY(-2px);
+}
+
+/* User 按钮 */
+.userBtn {
+    background-color: lightblue;
+    color: #333;
+    box-shadow: 0 4px 10px rgba(135, 206, 250, 0.4);
+}
+
+.userBtn:hover {
+    background-color: rgb(125, 195, 230);
+    transform: translateY(-2px);
 }

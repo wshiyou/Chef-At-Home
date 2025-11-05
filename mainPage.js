@@ -1,6 +1,13 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+// mainPage.js（精简版）
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+// === 你的 Firebase 配置（保持不变） ===
 const firebaseConfig = {
   apiKey: "AIzaSyDkNCN-607l7rB15Y335rODriPw1HqSB8E",
   authDomain: "chef-at-home-59cd6.firebaseapp.com",
@@ -14,6 +21,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ===========================
+// 1. 保留你原来的 getRecipes
+// ===========================
 async function getRecipes() {
   const querySnapshot = await getDocs(collection(db, "recipes"));
   querySnapshot.forEach((doc) => {
@@ -21,4 +31,124 @@ async function getRecipes() {
   });
 }
 
-getRecipes();
+// ===========================
+// 2. 初始化下拉选项（静态列表）
+// ===========================
+function initFilters() {
+  const ingredientSelect = document.getElementById("filter-ingredient");
+  const kitchenwareSelect = document.getElementById("filter-kitchenware");
+  const regionSelect = document.getElementById("filter-region");
+
+  if (!ingredientSelect || !kitchenwareSelect || !regionSelect) return;
+
+  // 可以自己按需要改这些选项
+  const ingredients = [
+    "Chicken",
+    "Beef",
+    "Tofu",
+    "Pasta",
+    "Egg",
+    "Avocado",
+    "Rice",
+    "Garlic"
+  ];
+
+  const kitchenware = [
+    "Pan",
+    "Pot",
+    "Oven",
+    "Wok",
+    "Blender",
+    "Grill"
+  ];
+
+  const regions = [
+    "Italian",
+    "Japanese",
+    "Chinese",
+    "American",
+    "Mexican",
+    "French"
+  ];
+
+  const fill = (select, list) => {
+    list.forEach((item) => {
+      const opt = document.createElement("option");
+      opt.value = item.toLowerCase();
+      opt.textContent = item;
+      select.appendChild(opt);
+    });
+  };
+
+  fill(ingredientSelect, ingredients);
+  fill(kitchenwareSelect, kitchenware);
+  fill(regionSelect, regions);
+}
+
+// ===========================
+// 3. 搜索功能（简单版）
+// ===========================
+function searchRecipes() {
+  const input = document.getElementById("searchBar");
+  const keyword = (input?.value || "").toLowerCase();
+
+  // 如果你之后在 HTML 里加上 .recipe-card，这里会根据关键字隐藏/显示
+  const cards = document.querySelectorAll(".recipe-card");
+
+  if (!cards.length) {
+    console.log("Search keyword:", keyword);
+    return;
+  }
+
+  cards.forEach((card) => {
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(keyword) ? "block" : "none";
+  });
+}
+
+// ===========================
+// 4. 绑定按钮事件
+// ===========================
+function setupButtons() {
+  const searchBtn = document.querySelector(".searchBtn");
+  const addRecipeBtn = document.querySelector(".addRecipeBtn");
+  const userBtn = document.querySelector(".userBtn");
+
+  if (searchBtn) {
+    searchBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      searchRecipes();
+    });
+  }
+
+  const searchInput = document.getElementById("searchBar");
+  if (searchInput) {
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchRecipes();
+      }
+    });
+  }
+
+  if (addRecipeBtn) {
+    addRecipeBtn.addEventListener("click", () => {
+      alert("🧑‍🍳 Add Recipe clicked!");
+    });
+  }
+
+  if (userBtn) {
+    userBtn.addEventListener("click", () => {
+      alert("👤 User clicked!");
+    });
+  }
+}
+
+// ===========================
+// 页面初始化
+// ===========================
+document.addEventListener("DOMContentLoaded", () => {
+  initFilters();   // 给三个下拉框填选项
+  setupButtons();  // 绑定 search / add / user 按钮
+  getRecipes();    // 从 Firestore 读数据并在控制台打印
+});

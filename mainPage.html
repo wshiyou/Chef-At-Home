@@ -7,23 +7,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- main header of our website -->
     <div class="bar">
-      <div class="title">
-        <!-- <div class="logo">🍳</div> -->
-        <span>🍳Chef at Home</span>
-        <div class="search">
-        <input id="searchBar" placeholder="Browse by the name of dish/ingredients/kitchenware">
-        <button class="searchBtn">search</button>
-        </div>
-      </div>
+  <div class="title">
+    <span>🍳Chef at Home</span>
+    <div class="search">
+      <input id="searchBar" placeholder="Browse by the name of dish/ingredients/kitchenware">
+      <button class="searchBtn">search</button>
     </div>
+  </div>
 
-    <nav class="mainNav">
+  <!-- 右上角功能按钮 -->
+  <div class="top-buttons">
+    <button class="addRecipeBtn">➕ Add Recipe</button>
+    <button class="userBtn">👤 User</button>
+  </div>
+</div>
+
+    <!-- <nav class="mainNav">
       <a href="#recommended">Recommended</a>
       <a href="#recent">Recent Upload</a>
       <a href="#most-liked">Most Liked</a>
-    </nav>
+    </nav> -->
 
     <div class="filters">
         <div class="filter-group">
@@ -74,6 +78,6 @@
       </section>
     </section>
 
-    <script src="mainPage.js"></script>
+    <script type="module", src="mainPage.js"></script>
 </body>
 </html>
