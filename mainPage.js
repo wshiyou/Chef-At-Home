@@ -24,29 +24,68 @@ const db = getFirestore(app);
 // ===========================
 async function getRecipes() {
   const querySnapshot = await getDocs(collection(db, "recipes"));
-  const grid = document.getElementById("recent-grid");
-  if (!grid) return;
 
-  grid.innerHTML = "";
-
+  // === 转为数组以便排序 ===
+  const recipes = [];
   querySnapshot.forEach((doc) => {
-    const recipe = doc.data();
-
-    const card = document.createElement("div");
-    card.className = "recipe-card";
-    card.innerHTML = `
-      <img src="${recipe.imageURL || "https://via.placeholder.com/150"}"
-           alt="${recipe.name}"
-           style="width:200px;height:150px;border-radius:8px;object-fit:cover;">
-      <h3>${recipe.name}</h3>
-      <p>⏱ ${recipe.time || "?"} mins</p>
-      <p>❤️ ${recipe.favorites || 0}</p>
-    `;
-    grid.appendChild(card);
+    const data = doc.data();
+    recipes.push(data);
   });
 
-  console.log("✅ Loaded recipes:", querySnapshot.size);
+  // === 按 favorites 降序排序 ===
+  const sortedByLikes = [...recipes].sort((a, b) => (b.favorites || 0) - (a.favorites || 0));
+
+  // === 获取页面元素 ===
+  const recentGrid = document.getElementById("recent-grid");
+  const likedGrid = document.getElementById("liked-grid");
+  if (!recentGrid || !likedGrid) return;
+
+  // === 清空旧内容 ===
+  recentGrid.innerHTML = "";
+  likedGrid.innerHTML = "";
+
+  // === Recent Upload: 显示全部（或按时间排序后） ===
+  recipes.forEach((recipe) => {
+    const card = createRecipeCard(recipe);
+    recentGrid.appendChild(card);
+  });
+
+  // === Most Liked: 只显示前 3 名 ===
+  sortedByLikes.slice(0, 3).forEach((recipe) => {
+    const card = createRecipeCard(recipe);
+    likedGrid.appendChild(card);
+  });
+  // === Recommended: 烹饪时间少于 15 分钟 ===
+const recommendedGrid = document.getElementById("recommended-grid");
+if (recommendedGrid) {
+  const quickRecipes = recipes.filter(r => (r.time || 999) <= 15);
+  const selected = quickRecipes.slice(0, 3);
+  recommendedGrid.innerHTML = "";
+  selected.forEach((recipe) => {
+    const card = createRecipeCard(recipe);
+    recommendedGrid.appendChild(card);
+  });
 }
+
+
+  console.log(`✅ Loaded recipes: ${recipes.length}, top liked: ${sortedByLikes[0]?.favorites || 0}`);
+}
+
+// === 辅助函数：创建卡片 ===
+function createRecipeCard(recipe) {
+  const card = document.createElement("div");
+  card.className = "recipe-card";
+  card.innerHTML = `
+    <img src="${recipe.imageURL || "https://via.placeholder.com/150"}"
+         alt="${recipe.name || "Recipe"}"
+         style="width:200px;height:150px;border-radius:8px;object-fit:cover;">
+    <h3>${recipe.name || "Untitled"}</h3>
+    <p>⏱ ${recipe.time || "?"} mins</p>
+    <p>❤️ ${recipe.favorites || 0}</p>
+  `;
+  return card;
+}
+
 
 // ===========================
 // 2. 初始化下拉选项
