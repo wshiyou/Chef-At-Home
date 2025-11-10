@@ -1,81 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Chef at Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chef at Home - Temple Login</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
-      background: #f2f4f8;
+      font-family: sans-serif;
+      background: url('images/bg.jpg') center/cover no-repeat;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
-    .auth-container {
-      width: 340px;
-      background: #fff;
+    .login-container {
+      background: rgba(255, 255, 255, 0.9);
       padding: 2rem;
       border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       text-align: center;
+      width: 380px;
     }
     h2 {
-      margin-bottom: 1rem;
-      color: #333;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
+      margin-bottom: 1.5rem;
     }
     button {
-      margin-top: 1.5rem;
       width: 100%;
-      background-color: #f97316;
-      color: white;
-      border: none;
-      border-radius: 10px;
       padding: 12px;
+      border: none;
+      border-radius: 8px;
       font-size: 1rem;
+      background-color: #4285F4;
+      color: white;
+      font-weight: bold;
       cursor: pointer;
-      transition: 0.2s;
     }
-    button:hover {
-      background-color: #ea580c;
-    }
-    #msg {
-      margin-top: 10px;
-      font-size: 14px;
-      text-align: center;
-    }
-    a {
-      display: block;
-      text-align: center;
-      margin-top: 12px;
+    p {
+      margin-top: 1rem;
       color: #555;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    a:hover {
-      color: #f97316;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <div class="auth-container">
-    <h2>Welcome Back</h2>
-    <input type="email" id="email" placeholder="example@temple.edu">
-    <input type="password" id="password" placeholder="Enter your password">
-    <button id="loginBtn">Login</button>
-    <p id="msg" style="color:red;"></p>
-    <a href="signup.html">Don't have an account? Sign up</a>
+  <div class="login-container">
+    <h2>Chef at Home</h2>
+    <button id="googleLogin">Login with Temple Google Account</button>
+    <p id="msg"></p>
   </div>
 
-  <script type="module" src="login.js"></script>
+  <script type="module" src="googleLogin.js"></script>
 </body>
 </html>

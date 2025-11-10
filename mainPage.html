@@ -1,83 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chef at Home</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chef at Home</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <div class="bar">
-  <div class="title">
-    <span>🍳Chef at Home</span>
-    <div class="search">
-      <input id="searchBar" placeholder="Browse by the name of dish/ingredients/kitchenware">
-      <button class="searchBtn">search</button>
+  <!-- 顶部导航栏 -->
+  <div class="bar">
+    <div class="title">
+      <span>🍳Chef at Home</span>
+      <div class="search">
+        <input id="searchBar" placeholder="Browse by the name of dish/ingredients/kitchenware" />
+        <button class="searchBtn">search</button>
+      </div>
+    </div>
+
+    <!-- 右上角按钮 -->
+    <div class="top-buttons">
+      <button class="addRecipeBtn">➕ Add Recipe</button>
+      <button class="userBtn" id="loginBtn">👤 User</button>
     </div>
   </div>
 
-  <!-- 右上角功能按钮 -->
-  <div class="top-buttons">
-    <button class="addRecipeBtn">➕ Add Recipe</button>
-    <button class="userBtn">👤 User</button>
+  <!-- 筛选栏 -->
+  <div class="filters">
+    <div class="filter-group">
+      <label for="filter-ingredient">Ingredients</label>
+      <select id="filter-ingredient">
+        <option value="">All ingredients</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="filter-kitchenware">Kitchenware</label>
+      <select id="filter-kitchenware">
+        <option value="">All kitchenware</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="filter-region">Region</label>
+      <select id="filter-region">
+        <option value="">All regions</option>
+      </select>
+    </div>
   </div>
-</div>
 
-    <!-- <nav class="mainNav">
-      <a href="#recommended">Recommended</a>
-      <a href="#recent">Recent Upload</a>
-      <a href="#most-liked">Most Liked</a>
-    </nav> -->
-
-    <div class="filters">
-        <div class="filter-group">
-          <label for="filter-ingredient">Ingredients</label>
-          <select id="filter-ingredient">
-            <option value="">All ingredients</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label for="filter-kitchenware">Kitchenware</label>
-          <select id="filter-kitchenware">
-            <option value="">All kitchenware</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label for="filter-region">Region</label>
-          <select id="filter-region">
-            <option value="">All regions</option>
-          </select>
-        </div>
+  <!-- 食谱展示 -->
+  <section class="recipes-wrapper">
+    <section id="recommended" class="recipes-section">
+      <div class="section-header">
+        <h2>Recommended</h2>
       </div>
-      
-    <section class="recipes-wrapper">
-      <!-- Recommended -->
-      <section id="recommended" class="recipes-section">
-        <div class="section-header">
-          <h2>Recommended</h2>
-        </div>
-        <div id="recommended-grid" class="recipes-grid"></div>
-      </section>
-
-      <!-- Recent Upload -->
-      <section id="recent" class="recipes-section">
-        <div class="section-header">
-          <h2>Recent Upload</h2>
-        </div>
-        <div id="recent-grid" class="recipes-grid"></div>
-      </section>
-
-      <!-- Most Liked -->
-      <section id="most-liked" class="recipes-section">
-        <div class="section-header">
-          <h2>Most Liked</h2>
-        </div>
-        <div id="liked-grid" class="recipes-grid"></div>
-      </section>
+      <div id="recommended-grid" class="recipes-grid"></div>
     </section>
 
-    <script type="module" src="mainPage.js"></script>
+    <section id="recent" class="recipes-section">
+      <div class="section-header">
+        <h2>Recent Upload</h2>
+      </div>
+      <div id="recent-grid" class="recipes-grid"></div>
+    </section>
+
+    <section id="most-liked" class="recipes-section">
+      <div class="section-header">
+        <h2>Most Liked</h2>
+      </div>
+      <div id="liked-grid" class="recipes-grid"></div>
+    </section>
+  </section>
+
+  <!-- JS -->
+  <script type="module" src="mainPage.js"></script>
+  <script type="module" src="googleLogin.js"></script>
 </body>
 </html>

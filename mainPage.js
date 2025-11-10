@@ -13,7 +13,6 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 
-
 // === Firebase 配置 ===
 const firebaseConfig = {
   apiKey: "AIzaSyDkNCN-607l7rB15Y335rODriPw1HqSB8E",
@@ -26,61 +25,46 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 // ===========================
-// 1. 从 Firestore 读取数据
+// 1️⃣ 读取 Firestore 菜谱数据
 // ===========================
 async function getRecipes() {
   const querySnapshot = await getDocs(collection(db, "recipes"));
-
-  // === 转为数组并附加 id ===
   const recipes = [];
   querySnapshot.forEach((docSnap) => {
-    const data = docSnap.data();
-    recipes.push({ ...data, id: docSnap.id }); // ✅ 把 Firestore 文档 ID 存进去
+    recipes.push({ id: docSnap.id, ...docSnap.data() });
   });
 
-  // === 按点赞数排序 ===
-  const sortedByLikes = [...recipes].sort((a, b) => (b.favorites || 0) - (a.favorites || 0));
-
-  // === 获取页面元素 ===
   const recentGrid = document.getElementById("recent-grid");
   const likedGrid = document.getElementById("liked-grid");
   const recommendedGrid = document.getElementById("recommended-grid");
+
   if (!recentGrid || !likedGrid || !recommendedGrid) return;
 
-  // === 清空旧内容 ===
   recentGrid.innerHTML = "";
   likedGrid.innerHTML = "";
   recommendedGrid.innerHTML = "";
 
-  // === Recent Upload ===
-  recipes.forEach((recipe) => {
-    const card = createRecipeCard(recipe, recipe.id);
-    recentGrid.appendChild(card);
-  });
-
-  // === Most Liked（前 3 名）===
-  sortedByLikes.slice(0, 3).forEach((recipe) => {
-    const card = createRecipeCard(recipe, recipe.id);
-    likedGrid.appendChild(card);
-  });
-
-  // === Recommended（烹饪时间 ≤15 分钟）===
+  const sortedByLikes = [...recipes].sort((a, b) => (b.favorites || 0) - (a.favorites || 0));
   const quickRecipes = recipes.filter((r) => (r.time || 999) <= 15);
-  quickRecipes.slice(0, 3).forEach((recipe) => {
-    const card = createRecipeCard(recipe, recipe.id);
-    recommendedGrid.appendChild(card);
-  });
 
-  console.log(`✅ Loaded recipes: ${recipes.length}, Top liked: ${sortedByLikes[0]?.favorites || 0}`);
+  // Recent
+  recipes.forEach((r) => recentGrid.appendChild(createRecipeCard(r, r.id)));
+
+  // Most liked
+  sortedByLikes.slice(0, 3).forEach((r) => likedGrid.appendChild(createRecipeCard(r, r.id)));
+
+  // Recommended
+  quickRecipes.slice(0, 3).forEach((r) => recommendedGrid.appendChild(createRecipeCard(r, r.id)));
+
+  console.log(`✅ Loaded ${recipes.length} recipes`);
 }
 
 // ===========================
-// 2. 创建卡片（含点赞功能）
+// 2️⃣ 创建菜谱卡片（含点赞）
 // ===========================
 function createRecipeCard(recipe, id) {
   const card = document.createElement("div");
@@ -96,47 +80,34 @@ function createRecipeCard(recipe, id) {
     </p>
   `;
 
-  // === 点赞元素 ===
   const likeSection = card.querySelector(".like-section");
   const likeCount = card.querySelector(".like-count");
   const likedKey = `liked_${id}`;
 
-  // === 如果已点赞过，显示为红色 ===
-  if (localStorage.getItem(likedKey)) {
-    likeSection.style.color = "red";
-  }
+  if (localStorage.getItem(likedKey)) likeSection.style.color = "red";
 
-  // === 点击事件 ===
   likeSection.addEventListener("click", async (e) => {
     e.stopPropagation();
-      // 🚫 如果未登录，提示先登录
-  const user = auth.currentUser;
-  if (!user) {
-    alert("Please log in to like recipes ❤️");
-    return;
-  }
-    const alreadyLiked = localStorage.getItem(likedKey);
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Please log in to like recipes ❤️");
+      return;
+    }
 
+    const alreadyLiked = localStorage.getItem(likedKey);
     try {
       const recipeRef = doc(db, "recipes", id);
-
       if (alreadyLiked) {
-        // ❤️ 取消点赞
         await updateDoc(recipeRef, { favorites: increment(-1) });
-        const newCount = Math.max(0, parseInt(likeCount.textContent) - 1);
-        likeCount.textContent = newCount;
+        likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
         likeSection.style.color = "black";
         localStorage.removeItem(likedKey);
       } else {
-        // ❤️ 点赞 +1
         await updateDoc(recipeRef, { favorites: increment(1) });
-        const newCount = parseInt(likeCount.textContent) + 1;
-        likeCount.textContent = newCount;
+        likeCount.textContent = parseInt(likeCount.textContent) + 1;
         likeSection.style.color = "red";
         likeSection.style.transform = "scale(1.3)";
-        setTimeout(() => {
-          likeSection.style.transform = "scale(1)";
-        }, 200);
+        setTimeout(() => (likeSection.style.transform = "scale(1)"), 200);
         localStorage.setItem(likedKey, "true");
       }
     } catch (error) {
@@ -148,9 +119,8 @@ function createRecipeCard(recipe, id) {
   return card;
 }
 
-
 // ===========================
-// 3. 初始化筛选下拉框
+// 3️⃣ 初始化下拉筛选
 // ===========================
 function initFilters() {
   const ingredients = ["Chicken", "Beef", "Tofu", "Pasta", "Egg", "Avocado", "Rice", "Garlic"];
@@ -174,7 +144,7 @@ function initFilters() {
 }
 
 // ===========================
-// 4. 搜索功能
+// 4️⃣ 搜索
 // ===========================
 function searchRecipes() {
   const keyword = document.getElementById("searchBar").value.toLowerCase();
@@ -186,7 +156,7 @@ function searchRecipes() {
 }
 
 // ===========================
-// 5. 绑定按钮事件
+// 5️⃣ 初始化按钮
 // ===========================
 function setupButtons() {
   document.querySelector(".searchBtn")?.addEventListener("click", searchRecipes);
@@ -196,7 +166,6 @@ function setupButtons() {
   document.querySelector(".addRecipeBtn")?.addEventListener("click", () =>
     alert("🧑‍🍳 Add Recipe clicked!")
   );
- 
 }
 
 // ===========================
@@ -205,18 +174,15 @@ function setupButtons() {
 document.addEventListener("DOMContentLoaded", () => {
   initFilters();
   setupButtons();
-
-  // ✅ 无论是否登录，都先加载菜谱
   getRecipes();
 
-  // ✅ 检查登录状态，用于控制按钮行为（不是控制数据加载）
+  // ✅ 登录状态变化（不跳转 login.html）
   onAuthStateChanged(auth, (user) => {
     const userBtn = document.querySelector(".userBtn");
-
     if (user) {
-      // 已登录用户
-      console.log("✅ Logged in as:", user.email);
-      userBtn.textContent = `👤 ${user.email}`;
+      userBtn.textContent = `👤 ${user.displayName || user.email}`;
+      userBtn.style.background = "#16a34a";
+      userBtn.style.color = "white";
       userBtn.onclick = async () => {
         if (confirm("Do you want to sign out?")) {
           await signOut(auth);
@@ -225,12 +191,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       };
     } else {
-      // 未登录用户
-      console.log("🚫 Not logged in");
-      userBtn.textContent = "👤 Login";
-      userBtn.onclick = () => {
-        window.location.href = "login.html";
-      };
+      userBtn.textContent = "👤 User";
+      // ✅ 登录逻辑交给 googleLogin.js，不跳转 login.html
     }
   });
 });
