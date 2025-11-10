@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Chef at Home</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .login-container {
+      max-width: 400px;
+      margin: 6rem auto;
+      background: rgba(255,255,255,0.9);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      background-color: #f97316;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Chef at Home - Login</h2>
+    <label>Email:</label>
+    <input type="email" id="email" placeholder="example@temple.edu">
+    <label>Password:</label>
+    <input type="password" id="password" placeholder="Enter your password">
+    <button id="loginBtn">Login</button>
+    <p id="msg" style="color:red;text-align:center;margin-top:10px;"></p>
+  </div>
+
+  <script type="module" src="login.js"></script>
+</body>
+</html>
+<a href="signup.html">Don’t have an account? Sign up</a>
