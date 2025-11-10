@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
 import {
   getAuth,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 
 const firebaseConfig = {
@@ -23,23 +24,45 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
   const msg = document.getElementById("msg");
 
   // ✅ 限制邮箱后缀
-  const allowedDomains = ["temple.edu", "tuj.temple.edu"]; // 可自定义多个
+  const allowedDomains = ["temple.edu", "tuj.temple.edu"];
   const emailDomain = email.split("@")[1];
-
   if (!allowedDomains.includes(emailDomain)) {
+    msg.style.color = "red";
     msg.textContent = "❌ Only Temple University emails are allowed.";
     return;
   }
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // ✅ 检查邮箱是否验证
+    if (!user.emailVerified) {
+      msg.style.color = "orange";
+      msg.innerHTML = `
+        ⚠️ Please verify your email before logging in.<br>
+        <button id="resendBtn" style="margin-top:6px;padding:4px 8px;">Resend verification email</button>
+      `;
+
+      // ⚙️ 添加“重新发送验证邮件”功能
+      document.getElementById("resendBtn").addEventListener("click", async () => {
+        await sendEmailVerification(user);
+        msg.style.color = "green";
+        msg.textContent = "📩 Verification email resent! Please check your inbox.";
+      });
+
+      return; // 阻止未验证邮箱继续登录
+    }
+
+    // ✅ 邮箱验证通过，允许登录
     msg.style.color = "green";
     msg.textContent = "✅ Login successful! Redirecting...";
     setTimeout(() => {
       window.location.href = "mainPage.html";
     }, 1500);
+
   } catch (error) {
-    console.error(error);
+    msg.style.color = "red";
     msg.textContent = "❌ Login failed: " + error.message;
   }
 });

@@ -109,7 +109,12 @@ function createRecipeCard(recipe, id) {
   // === 点击事件 ===
   likeSection.addEventListener("click", async (e) => {
     e.stopPropagation();
-
+      // 🚫 如果未登录，提示先登录
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Please log in to like recipes ❤️");
+    return;
+  }
     const alreadyLiked = localStorage.getItem(likedKey);
 
     try {
@@ -191,9 +196,7 @@ function setupButtons() {
   document.querySelector(".addRecipeBtn")?.addEventListener("click", () =>
     alert("🧑‍🍳 Add Recipe clicked!")
   );
-  document.querySelector(".userBtn")?.addEventListener("click", () =>
-    alert("👤 User clicked!")
-  );
+ 
 }
 
 // ===========================
@@ -203,7 +206,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initFilters();
   setupButtons();
 
-  // ✅ 检查登录状态
+  // ✅ 无论是否登录，都先加载菜谱
+  getRecipes();
+
+  // ✅ 检查登录状态，用于控制按钮行为（不是控制数据加载）
   onAuthStateChanged(auth, (user) => {
     const userBtn = document.querySelector(".userBtn");
 
@@ -218,9 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
           window.location.reload();
         }
       };
-
-      // 登录后才加载食谱
-      getRecipes();
     } else {
       // 未登录用户
       console.log("🚫 Not logged in");
@@ -231,4 +234,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-

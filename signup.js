@@ -1,7 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
 import {
   getAuth,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 
 const firebaseConfig = {
@@ -26,23 +28,34 @@ document.getElementById("signupBtn").addEventListener("click", async () => {
   const allowedDomains = ["temple.edu", "tuj.temple.edu"];
   const domain = email.split("@")[1];
   if (!allowedDomains.includes(domain)) {
+    msg.style.color = "red";
     msg.textContent = "❌ Only Temple University emails are allowed.";
     return;
   }
 
+  // ✅ 密码长度限制
   if (password.length < 6) {
+    msg.style.color = "red";
     msg.textContent = "❌ Password must be at least 6 characters.";
     return;
   }
 
   try {
-    await createUserWithEmailAndPassword(auth, email, password);
+    // ✅ 创建账户
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // ✅ 发送验证邮件
+    await sendEmailVerification(user);
+
     msg.style.color = "green";
-    msg.textContent = "✅ Account created successfully!";
-    setTimeout(() => {
-      window.location.href = "mainPage.html"; // 注册成功跳转主页
-    }, 1200);
+    msg.textContent = "✅ Verification email sent! Please check your inbox.";
+
+    // ✅ 立即登出（防止未验证用户直接登录）
+    await signOut(auth);
+
   } catch (error) {
+    msg.style.color = "red";
     msg.textContent = "❌ " + error.message;
   }
 });
