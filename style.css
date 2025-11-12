@@ -1,246 +1,241 @@
-#liked-grid {
-  scroll-behavior: smooth;
-}
-
-body{
-    padding: 0;
-    margin: 0;
-    background-image: url(https://static.independent.co.uk/s3fs-public/thumbnails/image/2020/04/02/13/istock-1155240408.jpg);
-    /* backdrop-filter: blur(); */
-    background-size: cover;
-    overflow-x: hidden;
-    min-height: 100vh;
+/* === 全局基础样式 === */
+body {
+  padding: 0;
+  margin: 0;
+  background-image: url(https://static.independent.co.uk/s3fs-public/thumbnails/image/2020/04/02/13/istock-1155240408.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "Poppins", sans-serif;
 }
 
 body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: inherit;
-    filter: contrast(0.6) brightness(0.6);
-    z-index: -1;
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: inherit;
+  filter: contrast(0.6) brightness(0.6);
+  z-index: -1;
 }
 
+/* === 顶部导航栏 === */
+.bar {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 
 .title {
-    font-family: 'Papyrus', fantasy;
-    font-size: 5rem;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  font-family: 'Papyrus', fantasy;
+  font-size: 5rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .search {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.8rem;
-}   
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
 
 .search input {
-    width: 350px;
-    padding: 10px 15px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    text-align: center;
+  width: 350px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  text-align: center;
 }
 
 .searchBtn {
-    background-color: lightblue;
-    width: 100px;
-    padding: 10px 15px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    font-weight: bold;
-
+  background-color: lightblue;
+  width: 100px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
 }
 
-.searchBtn:hover{
-    background-color:rgb(73, 108, 119);
+.searchBtn:hover {
+  background-color: rgb(73, 108, 119);
 }
 
-.mainNav{
-    display: flex;
-    font-size: 2.5rem;
-    gap: 5rem;
-}
-
-.filters {
-    margin-top: 18px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-}
-
-.filter-group {
-    font-size: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.filters {
-    background-color: rgba(240, 248, 255, 0.85); /* 淡浅蓝底色 */
-    border-radius: 20px;
-    padding: 1.5rem 2rem;
-    margin: 2rem auto;
-    width: fit-content;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(6px);
-}
-
-/* 每个小分类块 */
-.filter-group {
-    background-color: rgba(255, 255, 255, 0.8); /* 白色半透明背景 */
-    border-radius: 15px;
-    padding: 1rem 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.filter-group:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-}
-
-.filter-group label {
-    color: #333;
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-}
-
-.filter-group select {
-    background-color: #fff;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 0.4rem 0.8rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.filter-group select:hover {
-    border-color: #f97316;
-    box-shadow: 0 0 6px rgba(249, 115, 22, 0.5);
-}
-
-.section-header h2 {
-    color: #222;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
-}
-#recommended {
-    background-color: rgba(255, 204, 128, 0.85);
-    padding: 2rem;
-    border-radius: 20px;
-    margin: 2rem;
-}
-
-#recent {
-    background-color: rgba(173, 216, 230, 0.85); 
-    padding: 2rem;
-    border-radius: 20px;
-    margin: 2rem;
-}
-
-#most-liked {
-    background-color: rgba(255, 182, 193, 0.85);
-    padding: 2rem;
-    border-radius: 20px;
-    margin: 2rem;
-}
-
-.bar {
-    position: relative;
-    width: 100%;
-    height: 250px; /* 可根据需要调整高度 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;  /* 水平居中 */
-    justify-content: center;  /* 垂直居中 */
-    text-align: center;
-}
-
-/* 右上角按钮容器 */
+/* === 顶部右侧按钮 === */
 .top-buttons {
-    position: absolute;
-    top: 20px;
-    right: 40px;
-    display: flex;
-    gap: 1rem;
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  display: flex;
+  gap: 1rem;
 }
 
-/* 通用按钮样式 */
 .top-buttons button {
-    font-size: 1.2rem;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s ease;
+  font-size: 1.2rem;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
 }
 
-/* Add Recipe 按钮 */
 .addRecipeBtn {
-    background-color: #f97316; /* 橙色 */
-    color: white;
-    box-shadow: 0 4px 10px rgba(249, 115, 22, 0.5);
+  background-color: #f97316;
+  color: white;
+  box-shadow: 0 4px 10px rgba(249, 115, 22, 0.5);
 }
 
 .addRecipeBtn:hover {
-    background-color: #fb923c;
-    transform: translateY(-2px);
+  background-color: #fb923c;
+  transform: translateY(-2px);
 }
 
-/* User 按钮 */
 .userBtn {
-    background-color: lightblue;
-    color: #333;
-    box-shadow: 0 4px 10px rgba(135, 206, 250, 0.4);
+  background-color: lightblue;
+  color: #333;
+  box-shadow: 0 4px 10px rgba(135, 206, 250, 0.4);
 }
 
 .userBtn:hover {
-    background-color: rgb(125, 195, 230);
-    transform: translateY(-2px);
+  background-color: rgb(125, 195, 230);
+  transform: translateY(-2px);
 }
 
-/* === 让三个区块的菜谱卡片横向排列 === */
+/* === 筛选栏 === */
+.filters {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  background-color: rgba(240, 248, 255, 0.85);
+  border-radius: 20px;
+  padding: 1.5rem 2rem;
+  margin: 2rem auto;
+  width: fit-content;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+}
+
+.filter-group {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-group:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.filter-group label {
+  color: #333;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.filter-group select {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-group select:hover {
+  border-color: #f97316;
+  box-shadow: 0 0 6px rgba(249, 115, 22, 0.5);
+}
+
+/* === 区块标题 === */
+.section-header h2 {
+  color: #222;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+/* === 各个区块背景色 === */
+#recommended {
+  background-color: rgba(255, 204, 128, 0.85);
+  padding: 2rem;
+  border-radius: 20px;
+  margin: 2rem;
+}
+
+#recent {
+  background-color: rgba(173, 216, 230, 0.85);
+  padding: 2rem;
+  border-radius: 20px;
+  margin: 2rem;
+}
+
+#most-liked {
+  background-color: rgba(255, 182, 193, 0.85);
+  padding: 2rem;
+  border-radius: 20px;
+  margin: 2rem;
+}
+
+#liked-by-user {
+  background-color: rgba(255, 240, 245, 0.85);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem;
+}
+
+/* === 菜谱展示区 === */
 .recipes-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: flex-start;
+  justify-content: flex-start;  /* ✅ 改成左对齐 */
 }
 
-/* === 只让 “Most Liked” 部分横向滚动展示 === */
-#liked-grid {
+/* === 横向滚动样式 (Most Liked / Liked Recipes) === */
+#liked-grid,
+#liked-by-user-grid {
   display: flex;
-  flex-wrap: nowrap;      /* 不换行，强制横向排列 */
-  overflow-x: auto;       /* 允许横向滚动 */
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: 20px;
   padding-bottom: 10px;
-  scrollbar-width: thin;  /* 让滚动条更细一点 */
+  scrollbar-width: thin;
+  justify-content: flex-start; /* ✅ 左对齐滚动 */
 }
 
-#liked-grid::-webkit-scrollbar {
+#liked-grid::-webkit-scrollbar,
+#liked-by-user-grid::-webkit-scrollbar {
   height: 8px;
 }
 
-#liked-grid::-webkit-scrollbar-thumb {
-  background: rgba(255, 105, 135, 0.6); /* 粉红滚动条 */
+#liked-grid::-webkit-scrollbar-thumb,
+#liked-by-user-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 105, 135, 0.6);
   border-radius: 4px;
 }
 
-/* === 卡片样式保持一致 === */
+/* === 菜谱卡片 === */
 .recipe-card {
-  flex: 0 0 200px;          /* 固定宽度，防止拉伸 */
+  flex: 0 0 200px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
@@ -258,4 +253,15 @@ body::before {
   height: 150px;
   object-fit: cover;
   border-radius: 8px;
+}
+
+.like-section {
+  cursor: pointer;
+  font-weight: bold;
+  color: #555;
+}
+
+.like-section:hover {
+  color: #e63946;
+  transform: scale(1.1);
 }

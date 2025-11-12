@@ -62,6 +62,38 @@ async function getRecipes() {
 
   console.log(`✅ Loaded ${recipes.length} recipes`);
 }
+// ===========================
+// ❤️ 加载当前用户点赞过的菜谱
+// ===========================
+async function loadLikedRecipes() {
+  const likedByUserGrid = document.getElementById("liked-by-user-grid");
+  likedByUserGrid.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "recipes"));
+  const recipes = [];
+  querySnapshot.forEach((docSnap) => {
+    recipes.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  // 从 localStorage 找出用户点赞过的菜谱 ID
+  const likedIds = Object.keys(localStorage)
+    .filter((k) => k.startsWith("liked_") && localStorage.getItem(k) === "true")
+    .map((k) => k.replace("liked_", ""));
+
+  // 过滤出点赞过的菜谱
+  const likedRecipes = recipes.filter((r) => likedIds.includes(r.id));
+
+  if (likedRecipes.length === 0) {
+    likedByUserGrid.innerHTML =
+      "<p style='color:#555;'>You haven’t liked any recipes yet ❤️</p>";
+    return;
+  }
+
+  likedRecipes.forEach((r) => {
+    likedByUserGrid.appendChild(createRecipeCard(r, r.id));
+  });
+}
+
 
 // ===========================
 // 2️⃣ 创建菜谱卡片（含点赞）
@@ -163,10 +195,10 @@ function setupButtons() {
   document.getElementById("searchBar")?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") searchRecipes();
   });
-  document.querySelector(".addRecipeBtn")?.addEventListener("click", () =>
-    window.location.href = "addRecipe.html"
+ document.querySelector(".addRecipeBtn")?.addEventListener("click", () => {
+  window.location.href = "addRecipe.html";
+});
 
-  );
 }
 
 // ===========================
@@ -177,9 +209,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setupButtons();
   getRecipes();
 
-  // ✅ 登录状态变化（不跳转 login.html）
-  onAuthStateChanged(auth, (user) => {
+  const likedByUserSection = document.getElementById("liked-by-user");
+
+  // ✅ 登录状态变化
+  onAuthStateChanged(auth, async (user) => {
     const userBtn = document.querySelector(".userBtn");
+
     if (user) {
       userBtn.textContent = `👤 ${user.displayName || user.email}`;
       userBtn.style.background = "#16a34a";
@@ -191,9 +226,18 @@ document.addEventListener("DOMContentLoaded", () => {
           window.location.reload();
         }
       };
+
+      // ✅ 登录后显示 liked 区块并加载数据
+      likedByUserSection.style.display = "block";
+      loadLikedRecipes();
+
     } else {
       userBtn.textContent = "👤 User";
-      // ✅ 登录逻辑交给 googleLogin.js，不跳转 login.html
+      userBtn.style.background = "";
+      userBtn.style.color = "";
+      // ✅ 未登录则隐藏 liked 区块
+      likedByUserSection.style.display = "none";
     }
   });
 });
+
