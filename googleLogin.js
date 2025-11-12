@@ -17,21 +17,35 @@ const firebaseConfig = {
   appId: "1:373814953137:web:132d340f27d82ca1b5ce90"
 };
 
-// ✅ 避免重复初始化 Firebase
+// ✅ 避免重复初始化
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ✅ 限制 Temple 邮箱域名
+// ✅ 限制 Temple 邮箱
 provider.setCustomParameters({
   hd: "temple.edu",
   prompt: "select_account"
 });
 
-// 登录按钮事件
+// ✅ 登录逻辑：仅在点击时触发
 const loginBtn = document.getElementById("loginBtn");
+
 if (loginBtn) {
   loginBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+
+    // 如果已登录 → 执行登出
+    if (user) {
+      if (confirm("Sign out?")) {
+        await signOut(auth);
+        localStorage.clear(); // 清除点赞记录
+        alert("You have signed out.");
+      }
+      return;
+    }
+
+    // 否则 → 执行登录
     try {
       const result = await signInWithPopup(auth, provider);
       const email = result.user.email;
@@ -43,7 +57,7 @@ if (loginBtn) {
       }
 
       alert(`✅ Welcome ${result.user.displayName || result.user.email}!`);
-      window.location.reload();
+      // 不再刷新整页，让 mainPage.js 自动检测状态变化
     } catch (error) {
       console.error("Login failed:", error);
       alert("❌ " + error.message);
@@ -51,19 +65,18 @@ if (loginBtn) {
   });
 }
 
-// ✅ 监听登录状态变化（显示用户信息 + 登出）
+// ✅ 状态变化时，只更新按钮外观，不再自动登录
 onAuthStateChanged(auth, (user) => {
   const loginBtn = document.getElementById("loginBtn");
+  if (!loginBtn) return;
+
   if (user) {
     loginBtn.textContent = `👤 ${user.email}`;
-    loginBtn.onclick = async () => {
-      if (confirm("Sign out?")) {
-        await signOut(auth);
-        alert("You have signed out.");
-        window.location.reload();
-      }
-    };
+    loginBtn.style.background = "#16a34a";
+    loginBtn.style.color = "white";
   } else {
     loginBtn.textContent = "👤 Login";
+    loginBtn.style.background = "lightblue";
+    loginBtn.style.color = "#333";
   }
 });
