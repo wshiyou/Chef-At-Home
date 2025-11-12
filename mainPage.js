@@ -164,7 +164,8 @@ function setupButtons() {
     if (e.key === "Enter") searchRecipes();
   });
   document.querySelector(".addRecipeBtn")?.addEventListener("click", () =>
-    alert("🧑‍🍳 Add Recipe clicked!")
+    window.location.href = "addRecipe.html"
+
   );
 }
 

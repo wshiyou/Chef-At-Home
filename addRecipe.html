@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Recipe - Chef at Home</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .form-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      width: 400px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      background-color: #f97316;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover { background-color: #fb923c; }
+    #msg { text-align: center; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Add New Recipe</h2>
+    <input type="text" id="name" placeholder="Recipe Name" required />
+    <textarea id="description" placeholder="Description"></textarea>
+    <input type="number" id="time" placeholder="Cooking Time (mins)" />
+    <input type="text" id="ingredients" placeholder="Ingredients (comma separated)" />
+    <input type="text" id="kitchenware" placeholder="Kitchenware (comma separated)" />
+    <input type="text" id="region" placeholder="Region (e.g. Japanese)" />
+    <input type="file" id="image" accept="image/*" />
+    <button id="submitBtn">Submit</button>
+    <p id="msg"></p>
+  </div>
+
+  <script type="module" src="addRecipe.js"></script>
+</body>
+</html>
