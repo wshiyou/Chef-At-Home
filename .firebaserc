@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "chef-at-home-59cd6"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
