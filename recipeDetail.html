@@ -1,12 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Recipe Detail</title>
-</head>
-<body>
-  <div id="recipeDetail"></div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe Detail - Chef at Home</title>
 
+  <!-- 复用原来的主样式 -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- 详情页额外样式 -->
+  <link rel="stylesheet" href="recipeDetail.css" />
+</head>
+
+<body>
+  <!-- 顶部导航栏，风格跟 mainPage 一致 -->
+  <div class="bar">
+    <div class="title">
+      <span>🍳Chef at Home</span>
+      <div class="detail-header-subtitle">
+        <button class="backBtn" id="backBtn">← Back to Recipes</button>
+      </div>
+    </div>
+
+    <div class="top-buttons">
+      <!-- 这里不需要 Add Recipe 按钮，只保留用户按钮 -->
+      <button class="userBtn" id="loginBtn">👤 User</button>
+    </div>
+  </div>
+
+  <!-- 详情内容 -->
+  <main class="detail-wrapper">
+    <section id="detail-card" class="detail-card loading">
+      <p>Loading recipe...</p>
+    </section>
+  </main>
+
+  <!-- JS：详情逻辑 + 谷歌登录（复用你现有的 googleLogin.js） -->
   <script type="module" src="recipeDetail.js"></script>
+  <script type="module" src="googleLogin.js"></script>
 </body>
 </html>

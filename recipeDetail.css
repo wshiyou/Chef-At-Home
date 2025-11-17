@@ -1,0 +1,174 @@
+/* === 详情页整体布局 === */
+.detail-wrapper{
+  max-width: 960px;
+  margin: 0 auto 40px;
+  padding: 0 20px 40px;
+}
+
+/* 顶部 back 按钮那一小行 */
+.detail-header-subtitle{
+  margin-top: 10px;
+}
+
+.backBtn{
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.85);
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover{
+  background-color: #f97316;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* === 详情卡片 === */
+.detail-card{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  background-color: rgba(255, 255, 255, 0.92);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+
+/* Loading / 错误时简单居中样式 */
+.detail-card.loading,
+.detail-card.error{
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* 左侧图片区域 */
+.detail-image{
+  flex: 0 0 320px;
+  max-width: 100%;
+}
+
+.detail-image img{
+  width: 100%;
+  max-width: 360px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+
+/* 右侧文字区 */
+.detail-info{
+  flex: 1;
+  min-width: 260px;
+}
+
+.detail-title{
+  font-size: 2rem;
+  margin: 0 0 8px;
+  color: #222;
+}
+
+.detail-meta{
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.detail-author{
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.detail-block{
+  margin-bottom: 18px;
+}
+
+.detail-block h3{
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.detail-block p{
+  margin: 0;
+  line-height: 1.5;
+}
+
+.detail-list{
+  list-style: disc;
+  padding-left: 1.2rem;
+  margin: 0;
+}
+
+.detail-list li{
+  margin-bottom: 4px;
+}
+
+/* 按钮区：点赞 + 返回 */
+.detail-actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.likeBtn{
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  background-color: #ffe4e9;
+  color: #e63946;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.likeBtn:hover{
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.likeBtn.liked{
+  background-color: #ffb3c1;
+}
+
+.backBtn-secondary{
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #f97316;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(249, 115, 22, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.backBtn-secondary:hover{
+  background-color: #fb923c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(249, 115, 22, 0.6);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px){
+  .detail-card{
+    flex-direction: column;
+    align-items: center;
+  }
+  .detail-image{
+    flex: 0 0 auto;
+  }
+  .detail-info{
+    width: 100%;
+  }
+}
