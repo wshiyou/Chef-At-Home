@@ -31,7 +31,7 @@ const db = getFirestore(app);
 // ===========================
 // 1️⃣ 读取 Firestore 菜谱数据
 // ===========================
-async function getRecipes() {
+async function getRecipes(){
   const querySnapshot = await getDocs(collection(db, "recipes"));
   const recipes = [];
   querySnapshot.forEach((docSnap) => {
@@ -66,7 +66,7 @@ async function getRecipes() {
 // ===========================
 // ❤️ 加载当前用户点赞过的菜谱
 // ===========================
-async function loadLikedRecipes() {
+async function loadLikedRecipes(){
   const likedByUserGrid = document.getElementById("liked-by-user-grid");
   likedByUserGrid.innerHTML = "";
 
@@ -82,7 +82,7 @@ async function loadLikedRecipes() {
 
   const likedRecipes = recipes.filter((r) => likedIds.includes(r.id));
 
-  if (likedRecipes.length === 0) {
+  if (likedRecipes.length === 0){
     likedByUserGrid.innerHTML = "<p style='color:#555;'>You haven’t liked any recipes yet ❤️</p>";
     return;
   }
@@ -95,7 +95,7 @@ async function loadLikedRecipes() {
 // ===========================
 // 2️⃣ 创建菜谱卡片（含点赞）
 // ===========================
-function createRecipeCard(recipe, id) {
+function createRecipeCard(recipe, id){
   const card = document.createElement("div");
   card.className = "recipe-card";
   card.innerHTML = `
@@ -118,7 +118,7 @@ function createRecipeCard(recipe, id) {
   likeSection.addEventListener("click", async (e) => {
     e.stopPropagation();
     const user = auth.currentUser;
-    if (!user) {
+    if (!user){
       alert("Please log in to like recipes ❤️");
       return;
     }
@@ -126,12 +126,14 @@ function createRecipeCard(recipe, id) {
     const alreadyLiked = localStorage.getItem(likedKey);
     try {
       const recipeRef = doc(db, "recipes", id);
-      if (alreadyLiked) {
+      if (alreadyLiked){
         await updateDoc(recipeRef, { favorites: increment(-1) });
         likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
         likeSection.style.color = "black";
         localStorage.removeItem(likedKey);
-      } else {
+      }
+      else
+      {
         await updateDoc(recipeRef, { favorites: increment(1) });
         likeCount.textContent = parseInt(likeCount.textContent) + 1;
         likeSection.style.color = "red";
@@ -139,11 +141,15 @@ function createRecipeCard(recipe, id) {
         setTimeout(() => (likeSection.style.transform = "scale(1)"), 200);
         localStorage.setItem(likedKey, "true");
       }
-    } catch (error) {
+    } catch (error){
       console.error("Error updating likes:", error);
       alert("Failed to update likes.");
     }
   });
+
+  card.addEventListener("click", () => {
+  window.location.href = `recipeDetail.html?id=${id}`;
+});
 
   return card;
 }
@@ -151,7 +157,7 @@ function createRecipeCard(recipe, id) {
 // ===========================
 // 3️⃣ 初始化下拉筛选
 // ===========================
-function initFilters() {
+function initFilters(){
   const ingredients = ["Chicken", "Beef", "Tofu", "Pasta", "Egg", "Avocado", "Rice", "Garlic"];
   const kitchenware = ["Pan", "Pot", "Oven", "Wok", "Blender", "Grill"];
   const regions = ["Italian", "Japanese", "Chinese", "American", "Mexican", "French"];
@@ -175,7 +181,7 @@ function initFilters() {
 // ===========================
 // 4️⃣ 搜索
 // ===========================
-function searchRecipes() {
+function searchRecipes(){
   const keyword = document.getElementById("searchBar").value.toLowerCase();
   const cards = document.querySelectorAll(".recipe-card");
   cards.forEach((card) => {
@@ -187,7 +193,7 @@ function searchRecipes() {
 // ===========================
 // 5️⃣ 初始化按钮
 // ===========================
-function setupButtons() {
+function setupButtons(){
   document.querySelector(".searchBtn")?.addEventListener("click", searchRecipes);
   document.getElementById("searchBar")?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") searchRecipes();
@@ -209,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const userBtn = document.querySelector(".userBtn");
 
   onAuthStateChanged(auth, async (user) => {
-    if (user) {
+    if (user){
       // ✅ 登录后
       userBtn.textContent = `👤 ${user.displayName || user.email}`;
       userBtn.style.background = "#16a34a";
@@ -218,13 +224,14 @@ document.addEventListener("DOMContentLoaded", () => {
       await loadLikedRecipes();
 
       userBtn.onclick = async () => {
-        if (confirm("Do you want to sign out?")) {
+        if (confirm("Do you want to sign out?")){
           await signOut(auth);
           localStorage.clear(); // 🧹 清空上一个用户点赞记录
           alert("Signed out!");
         }
       };
-    } else {
+    }else
+    {
       // ❌ 未登录
       likedByUserSection.style.display = "none";
       userBtn.textContent = "👤 User";
