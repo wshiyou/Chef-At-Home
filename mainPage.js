@@ -98,6 +98,10 @@ async function loadLikedRecipes(){
 function createRecipeCard(recipe, id){
   const card = document.createElement("div");
   card.className = "recipe-card";
+
+  card.dataset.ingredients = (recipe.ingredients || []).map(i => i.toLowerCase()).join(",");
+card.dataset.kitchenware = (recipe.kitchenware || []).map(k => k.toLowerCase()).join(",");
+card.dataset.region = (recipe.region || "").toLowerCase();
   card.innerHTML = `
     <img src="${recipe.imageURL || "https://via.placeholder.com/150"}"
          alt="${recipe.name || "Recipe"}"
@@ -155,28 +159,112 @@ function createRecipeCard(recipe, id){
 }
 
 // ===========================
+// ✨ 过滤组件：根据筛选条件隐藏/显示卡片
+// ===========================
+function applyFilters() {
+  const keyword = document.getElementById("searchBar").value.toLowerCase();
+  const ingredientFilter = document.getElementById("filter-ingredient").value;
+  const kitchenwareFilter = document.getElementById("filter-kitchenware").value;
+  const regionFilter = document.getElementById("filter-region").value;
+
+  const cards = document.querySelectorAll(".recipe-card");
+
+  cards.forEach((card) => {
+    const text = card.innerText.toLowerCase();
+    const ingredients = card.dataset.ingredients?.split(",") || [];
+    const kitchenware = card.dataset.kitchenware?.split(",") || [];
+    const region = card.dataset.region || "";
+
+    let visible = true;
+
+    // 搜索框过滤
+    if (keyword && !text.includes(keyword)) {
+      visible = false;
+    }
+
+    // Ingredient 过滤
+    if (ingredientFilter && !ingredients.includes(ingredientFilter)) {
+      visible = false;
+    }
+
+    // Kitchenware 过滤
+    if (kitchenwareFilter && !kitchenware.includes(kitchenwareFilter)) {
+      visible = false;
+    }
+
+    // Region 过滤
+    if (regionFilter && region.toLowerCase() !== regionFilter) {
+      visible = false;
+    }
+
+    card.style.display = visible ? "block" : "none";
+  });
+}
+
+// ===========================
+// ✨ 绑定筛选事件
+// ===========================
+function setupFilterEvents() {
+  document.getElementById("filter-ingredient").addEventListener("change", applyFilters);
+  document.getElementById("filter-kitchenware").addEventListener("change", applyFilters);
+  document.getElementById("filter-region").addEventListener("change", applyFilters);
+  document.getElementById("searchBar").addEventListener("input", applyFilters); // 搜索也同步过滤
+}
+
+
+
+// ===========================
 // 3️⃣ 初始化下拉筛选
 // ===========================
-function initFilters(){
-  const ingredients = ["Chicken", "Beef", "Tofu", "Pasta", "Egg", "Avocado", "Rice", "Garlic"];
-  const kitchenware = ["Pan", "Pot", "Oven", "Wok", "Blender", "Grill"];
-  const regions = ["Italian", "Japanese", "Chinese", "American", "Mexican", "French"];
+// ===========================
+// ✨ 自动从数据库提取筛选项
+// ===========================
+async function initFilters() {
+  const ingredientSelect = document.getElementById("filter-ingredient");
+  const kitchenwareSelect = document.getElementById("filter-kitchenware");
+  const regionSelect = document.getElementById("filter-region");
 
-  const fill = (id, list) => {
-    const select = document.getElementById(id);
-    if (!select) return;
-    list.forEach((item) => {
-      const opt = document.createElement("option");
-      opt.value = item.toLowerCase();
-      opt.textContent = item;
-      select.appendChild(opt);
-    });
-  };
+  // 读取全部 recipes
+  const snapshot = await getDocs(collection(db, "recipes"));
 
-  fill("filter-ingredient", ingredients);
-  fill("filter-kitchenware", kitchenware);
-  fill("filter-region", regions);
+  const ingredientSet = new Set();
+  const kitchenwareSet = new Set();
+  const regionSet = new Set();
+
+  snapshot.forEach(doc => {
+    const r = doc.data();
+
+    // ingredients 是数组
+    (r.ingredients || []).forEach(i => ingredientSet.add(i.trim()));
+
+    // kitchenware 是数组
+    (r.kitchenware || []).forEach(k => kitchenwareSet.add(k.trim()));
+
+    // region 是字符串
+    if (r.region) regionSet.add(r.region.trim());
+  });
+
+  // 转为数组并排序
+  const ingredientList = [...ingredientSet].sort();
+  const kitchenwareList = [...kitchenwareSet].sort();
+  const regionList = [...regionSet].sort();
+
+  // 填充到下拉框
+  fillOptions(ingredientSelect, ingredientList);
+  fillOptions(kitchenwareSelect, kitchenwareList);
+  fillOptions(regionSelect, regionList);
 }
+
+// 工具函数：填充下拉选项
+function fillOptions(selectElement, list) {
+  list.forEach(item => {
+    const opt = document.createElement("option");
+    opt.value = item.toLowerCase();
+    opt.textContent = item;
+    selectElement.appendChild(opt);
+  });
+}
+
 
 // ===========================
 // 4️⃣ 搜索
@@ -209,6 +297,7 @@ function setupButtons(){
 document.addEventListener("DOMContentLoaded", () => {
   initFilters();
   setupButtons();
+  setupFilterEvents();
   getRecipes();
 
   const likedByUserSection = document.getElementById("liked-by-user");
