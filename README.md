@@ -71,3 +71,4 @@ Time management → Set weekly goals and check progress.
 UI design → Follow clean examples from recipe sites.
 
 Bugs during testing → Fix step by step and focus on core features first.
+demo：https://chef-at-home-59cd6.web.app
